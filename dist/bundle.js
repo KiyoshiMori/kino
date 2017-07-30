@@ -72568,12 +72568,12 @@ class modal_book extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
 				),
 				__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
 					'div',
+					{ className: 'ui fluid image ' },
+					__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('img', { src: this.props.choosen && `https://image.tmdb.org/t/p/original/${this.props.choosen.backdrop_path}` })
+				),
+				__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+					'div',
 					{ className: 'content' },
-					__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-						'div',
-						{ className: 'ui fluid image ' },
-						__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('img', { src: this.props.choosen && `https://image.tmdb.org/t/p/original/${this.props.choosen.backdrop_path}` })
-					),
 					__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('div', { className: 'ui divider' }),
 					__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
 						'div',
