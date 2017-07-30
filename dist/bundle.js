@@ -51288,7 +51288,6 @@ class Test extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
 				on: 'hover',
 				opacity: '0.2'
 			});
-			console.log('click');
 		}).catch(err => console.error(err));
 	}
 
@@ -51305,14 +51304,14 @@ class Test extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
 			'div',
 			{ className: 'ui four doubling cards centered' },
 			__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__modal_book__["a" /* default */], { choosen: this.state.choosen, ref: 'modal' }),
-			this.state.data.sort((a, b) => b.popularity - a.popularity).map((el, index) => {
+			this.state.data !== null && this.state.data.sort((a, b) => b.popularity - a.popularity).map((el, index) => {
 				return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
 					'div',
 					{ onClick: () => this.choose(el.id), className: 'ui card', id: el.id, key: index },
 					__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
 						'div',
 						{ className: 'image blurring', style: { height: "390px", overflow: "hidden" } },
-						__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('img', { src: `https://image.tmdb.org/t/p/original/${el.poster_path}` }),
+						__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('img', { src: el.poster_path ? `https://image.tmdb.org/t/p/original/${el.poster_path}` : '../img/poster-placeholder.jpg' }),
 						__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
 							'div',
 							{ className: 'ui dimmer' },
@@ -72551,11 +72550,14 @@ class modal_book extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
 	activate(e) {
 		this.setState({ active: e.target.id ? e.target.id : e.target.parentNode.id });
 	}
-
+	qwe() {
+		$('.ui.modal').modal('refresh');
+	}
 	choose() {
 		$('.ui.modal').modal({
 			blurring: true
-		}).modal('show');
+		}).modal('settings', 'detachable', false).modal('settings', 'observeChanges', true).modal('show');
+		setTimeout(this.qwe, 100);
 	}
 
 	render() {
@@ -74714,7 +74716,7 @@ exports = module.exports = __webpack_require__(265)(undefined);
 
 
 // module
-exports.push([module.i, ".time-choose.ui {\r\n\tpadding: 10px;\r\n}\r\n.time {\r\n\tborder: 1px solid red;\r\n\tborder-radius: 100px;\r\n\tmargin-right: 15px;\r\n\ttext-align: center;\r\n\tcursor: pointer;\r\n}\r\n.time_active {\r\n\tbackground: #e5e5e5;\r\n}", ""]);
+exports.push([module.i, ".time-choose.ui {\r\n\tpadding: 10px;\r\n}\r\n.time {\r\n\tborder: 1px solid red;\r\n\tborder-radius: 100px;\r\n\tmargin-right: 15px;\r\n\ttext-align: center;\r\n\tcursor: pointer;\r\n}\r\n.time_active {\r\n\tbackground: #e5e5e5;\r\n}\r\n", ""]);
 
 // exports
 
