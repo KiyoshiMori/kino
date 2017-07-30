@@ -51311,7 +51311,7 @@ class Test extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
 					__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
 						'div',
 						{ className: 'image blurring', style: { height: "390px", overflow: "hidden" } },
-						__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('img', { src: el.poster_path ? `https://image.tmdb.org/t/p/original/${el.poster_path}` : '../img/poster-placeholder.jpg' }),
+						__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('img', { src: el.poster_path ? `https://image.tmdb.org/t/p/original/${el.poster_path}` : './img/poster-placeholder.jpg' }),
 						__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
 							'div',
 							{ className: 'ui dimmer' },
