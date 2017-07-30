@@ -51189,6 +51189,11 @@ class App extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
       __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
         'div',
         { className: 'ui container', style: { paddingTop: '15px' } },
+        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+          'h1',
+          null,
+          'Movies of this month'
+        ),
         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__Test__["a" /* default */], null)
       )
     );
@@ -51300,7 +51305,7 @@ class Test extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
 			'div',
 			{ className: 'ui four doubling cards centered' },
 			__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__modal_book__["a" /* default */], { choosen: this.state.choosen, ref: 'modal' }),
-			this.state.data.map((el, index) => {
+			this.state.data.sort((a, b) => b.popularity - a.popularity).map((el, index) => {
 				return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
 					'div',
 					{ onClick: () => this.choose(el.id), className: 'ui card', id: el.id, key: index },
