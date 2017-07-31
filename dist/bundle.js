@@ -40299,26 +40299,36 @@ class modal_book extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
 			}, {
 				time: '13:35'
 			}],
-			active: null
+			active: null,
+			data: [],
+			additional_data: []
 		};
 	}
 
 	activate(e) {
 		this.setState({ active: e.target.id ? e.target.id : e.target.parentNode.id });
 	}
+
 	qwe() {
 		$('#img').on('load', function () {
-			console.log('qwe');
 			$('.ui.modal').modal('refresh');
 		});
 		$('.ui.modal').modal('refresh');
 	}
-	choose() {
-		$('.ui.modal').modal({
-			blurring: true
-		}).modal('settings', 'detachable', false).modal('settings', 'observeChanges', true).modal('show');
-		if ($('.ui.modal').length > 1) $('.ui.modal')[0].remove();
-		setTimeout(this.qwe, 200);
+
+	choose(qwe) {
+		fetch(`https://api.themoviedb.org/3/movie/${qwe.id}?api_key=dd816c83ab8a2311c9d766d517e4f00c`).then(res => res.json()).then(json => {
+			this.setState({ additional_data: qwe });
+			this.setState({ data: json });
+			console.log(qwe);
+			console.log(json);
+		}).catch(err => console.error(err)).then(() => {
+			$('.ui.modal').modal({
+				blurring: true
+			}).modal('settings', 'detachable', false).modal('settings', 'observeChanges', true).modal('show');
+			if ($('.ui.modal').length > 1) $('.ui.modal')[0].remove();
+			setTimeout(this.qwe, 200);
+		});
 	}
 
 	render() {
@@ -40332,12 +40342,26 @@ class modal_book extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
 				__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
 					'div',
 					{ className: 'header' },
-					this.props.choosen && this.props.choosen.title
+					__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+						'div',
+						{ className: 'title' },
+						this.state.data.title
+					),
+					__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+						'div',
+						{ className: 'duration' },
+						__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('i', { className: 'wait icon' }),
+						__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+							'span',
+							null,
+							`${this.state.data.runtime > 60 ? Math.floor(this.state.data.runtime / 60).toString() + ':' + (this.state.data.runtime - Math.floor(this.state.data.runtime / 60) * 60 < 10 ? '0' + (this.state.data.runtime - Math.floor(this.state.data.runtime / 60) * 60).toString() : this.state.data.runtime - Math.floor(this.state.data.runtime / 60) * 60).toString() : this.state.data.runtime}`
+						)
+					)
 				),
 				__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
 					'div',
 					{ className: 'ui fluid image ' },
-					__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('img', { id: 'img', src: this.props.choosen && `https://image.tmdb.org/t/p/original/${this.props.choosen.backdrop_path}` })
+					__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('img', { id: 'img', src: `https://image.tmdb.org/t/p/original/${this.state.data.backdrop_path}` })
 				),
 				__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
 					'div',
@@ -40348,11 +40372,23 @@ class modal_book extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
 						{ className: 'description' },
 						__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
 							'div',
+							{ className: 'title_year_countries' },
+							__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+								'p',
+								null,
+								this.state.data.length != 0 && `${this.state.data.original_title} | ${this.state.data.release_date.substring(0, 4)} | `
+							),
+							this.state.data.length != 0 ? this.state.data.production_countries.map((el, index) => {
+								return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('i', { key: index, className: `${el.iso_3166_1.toLowerCase()} flag` });
+							}) : null
+						),
+						__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+							'div',
 							{ className: 'ui header' },
 							__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
 								'p',
 								null,
-								this.props.choosen && this.props.choosen.overview
+								this.state.additional_data.overview
 							)
 						),
 						__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('div', { className: 'ui divider' }),
@@ -53168,15 +53204,16 @@ class Test extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
 		function finding(i) {
 			return i.id == Number(id);
 		}
-		this.setState({ choosen: this.state.data.find(finding) });
-		this.state.data.find(finding) && this.refs.modal.choose();
+
+		let choosen = this.state.data.find(finding);
+		this.refs.modal.choose(choosen);
 	}
 
 	render() {
 		return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
 			'div',
 			{ className: 'ui four doubling cards centered' },
-			__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__modal_book__["a" /* default */], { choosen: this.state.choosen, ref: 'modal', location: this.props.location.pathname }),
+			__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__modal_book__["a" /* default */], { ref: 'modal', location: this.props.location.pathname }),
 			this.state.data !== null && this.state.data.sort((a, b) => b.popularity - a.popularity).map((el, index) => {
 				return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
 					'div',
@@ -75760,7 +75797,7 @@ exports = module.exports = __webpack_require__(168)(undefined);
 
 
 // module
-exports.push([module.i, ".time-choose.ui {\r\n\tpadding: 10px;\r\n}\r\n.time {\r\n\tborder: 1px solid red;\r\n\tborder-radius: 100px;\r\n\tmargin-right: 15px;\r\n\ttext-align: center;\r\n\tcursor: pointer;\r\n}\r\n.time_active {\r\n\tbackground: #e5e5e5;\r\n}\r\n", ""]);
+exports.push([module.i, ".time-choose.ui {\r\n\tpadding: 10px;\r\n}\r\n.time {\r\n\tborder: 1px solid red;\r\n\tborder-radius: 100px;\r\n\tmargin-right: 15px;\r\n\ttext-align: center;\r\n\tcursor: pointer;\r\n}\r\n.time_active {\r\n\tbackground: #e5e5e5;\r\n}\r\n.title_year_countries {\r\n\tdisplay: flex!important;\r\n\talign-items: center!important;\r\n}\r\n.title_year_countries>p {\r\n\tmargin: 0;\r\n\tpadding-right: 10px;\r\n}\r\n.header {\r\n\tmin-height: 50px;\r\n}\r\n.duration {\r\n\tfloat:right;\r\n}\r\n.title {\r\n\tfloat:left;\r\n}", ""]);
 
 // exports
 
