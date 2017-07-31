@@ -40366,22 +40366,43 @@ class modal_book extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
 				__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
 					'div',
 					{ className: 'content' },
-					__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('div', { className: 'ui divider' }),
+					__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+						'div',
+						{ className: 'title_year_countries' },
+						__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+							'p',
+							null,
+							this.state.data.length != 0 && `${this.state.data.original_title} | ${this.state.data.release_date.substring(0, 4)} | `
+						),
+						this.state.data.length != 0 ? this.state.data.production_countries.map((el, index) => {
+							return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('i', { key: index, className: `${el.iso_3166_1.toLowerCase()} flag` });
+						}) : null
+					),
+					__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+						'div',
+						{ className: 'genres' },
+						__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+							'p',
+							null,
+							__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+								'strong',
+								null,
+								'Genres: '
+							)
+						),
+						this.state.data.length != 0 && this.state.data.genres.map((el, index) => {
+							return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+								'p',
+								{ key: index },
+								el.name,
+								Number(index) < this.state.data.genres.length - 1 ? ', ' : null
+							);
+						})
+					),
 					__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
 						'div',
 						{ className: 'description' },
-						__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-							'div',
-							{ className: 'title_year_countries' },
-							__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-								'p',
-								null,
-								this.state.data.length != 0 && `${this.state.data.original_title} | ${this.state.data.release_date.substring(0, 4)} | `
-							),
-							this.state.data.length != 0 ? this.state.data.production_countries.map((el, index) => {
-								return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('i', { key: index, className: `${el.iso_3166_1.toLowerCase()} flag` });
-							}) : null
-						),
+						__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('div', { className: 'ui divider' }),
 						__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
 							'div',
 							{ className: 'ui header' },
@@ -75797,7 +75818,7 @@ exports = module.exports = __webpack_require__(168)(undefined);
 
 
 // module
-exports.push([module.i, ".time-choose.ui {\r\n\tpadding: 10px;\r\n}\r\n.time {\r\n\tborder: 1px solid red;\r\n\tborder-radius: 100px;\r\n\tmargin-right: 15px;\r\n\ttext-align: center;\r\n\tcursor: pointer;\r\n}\r\n.time_active {\r\n\tbackground: #e5e5e5;\r\n}\r\n.title_year_countries {\r\n\tdisplay: flex!important;\r\n\talign-items: center!important;\r\n}\r\n.title_year_countries>p {\r\n\tmargin: 0;\r\n\tpadding-right: 10px;\r\n}\r\n.header {\r\n\tmin-height: 50px;\r\n}\r\n.duration {\r\n\tfloat:right;\r\n}\r\n.title {\r\n\tfloat:left;\r\n}", ""]);
+exports.push([module.i, ".time-choose.ui {\r\n\tpadding: 10px;\r\n}\r\n.time {\r\n\tborder: 1px solid red;\r\n\tborder-radius: 100px;\r\n\tmargin-right: 15px;\r\n\ttext-align: center;\r\n\tcursor: pointer;\r\n}\r\n.time_active {\r\n\tbackground: #e5e5e5;\r\n}\r\n.title_year_countries {\r\n\tdisplay: flex!important;\r\n\talign-items: center!important;\r\n\tfloat:left;\r\n}\r\n.genres,.title_year_countries {\r\n\tpadding-bottom: 10px;\r\n}\r\n.title_year_countries>p {\r\n\tmargin: 0;\r\n\tpadding-right: 10px;\r\n}\r\n.genres>p {\r\n\tmargin: 0;\r\n\tpadding-right: 3px;\r\n}\r\n.header {\r\n\tmin-height: 50px;\r\n}\r\n.duration {\r\n\tfloat:right;\r\n}\r\n.title {\r\n\tfloat:left;\r\n}\r\n.genres {\r\n\tdisplay: flex!important;\r\n\talign-items: center!important;\r\n\tfloat:right;\r\n}\r\n.description {\r\n\tpadding-top: 20px;\r\n}", ""]);
 
 // exports
 
