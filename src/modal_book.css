@@ -1,0 +1,65 @@
+.date {
+	padding: 10px;
+	border: 1px solid red;
+	border-radius: 100px;
+	margin: 10px;
+	min-width: 66px;
+	display: flex;
+	justify-content: center;
+	cursor: pointer;
+}
+.date_active {
+	background: #e5e5e5;
+}
+.date-choose {
+}
+.time-choose.ui {
+	padding: 10px;
+}
+.time {
+	border: 1px solid red;
+	border-radius: 100px;
+	margin-right: 15px;
+	text-align: center;
+	cursor: pointer;
+}
+.time_active {
+	background: #e5e5e5;
+}
+.time_block {
+	opacity: 0.4;
+	pointer-events: none;
+}
+.title_year_countries {
+	display: flex!important;
+	align-items: center!important;
+	float:left;
+}
+.genres,.title_year_countries {
+	padding-bottom: 10px;
+}
+.title_year_countries>p {
+	margin: 0;
+	padding-right: 10px;
+}
+.genres>p {
+	margin: 0;
+	padding-right: 3px;
+}
+.header {
+	min-height: 50px;
+}
+.duration {
+	float:right;
+}
+.title {
+	float:left;
+}
+.genres {
+	display: flex!important;
+	align-items: center!important;
+	float:right;
+}
+.description {
+	padding-top: 20px;
+}

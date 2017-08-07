@@ -40287,153 +40287,247 @@ $.fn.dimmer.settings = {
 
 
 
+
 class modal_book extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
-	constructor(props) {
-		super(props);
-		this.activate = this.activate.bind(this);
-		this.state = {
-			times: [{
-				time: '09:00'
-			}, {
-				time: '12:00'
-			}, {
-				time: '13:35'
-			}],
-			active: null,
-			data: [],
-			additional_data: []
-		};
-	}
+    constructor(props) {
+        super(props);
+        this.activate = this.activate.bind(this);
+        this.choose_day = this.choose_day.bind(this);
+        this.state = {
+            times: [{
+                day: '7',
+                hours: '01',
+                minutes: '00'
+            }, {
+                day: '7',
+                hours: '11',
+                minutes: '35'
+            }, {
+                day: '7',
+                hours: '18',
+                minutes: '00'
+            }, {
+                day: '7',
+                hours: '19',
+                minutes: '35'
+            }, {
+                day: '7',
+                hours: '23',
+                minutes: '50'
+            }, {
+                day: '8',
+                hours: '12',
+                minutes: '00'
+            }, {
+                day: '8',
+                hours: '13',
+                minutes: '35'
+            }, {
+                day: '8',
+                hours: '15',
+                minutes: '00'
+            }, {
+                day: '8',
+                hours: '17',
+                minutes: '25'
+            }, {
+                day: '8',
+                hours: '19',
+                minutes: '05'
+            }, {
+                day: '8',
+                hours: '22',
+                minutes: '00'
+            }],
+            active_time: null,
+            active_date: new Date().getDate().toString(),
+            movie_data: [],
+            additional_movie_data: [],
+            loading: true
+        };
+    }
 
-	activate(e) {
-		this.setState({ active: e.target.id ? e.target.id : e.target.parentNode.id });
-	}
+    activate(e) {
+        this.setState({ active_time: e });
+    }
 
-	qwe() {
-		$('#img').on('load', function () {
-			$('.ui.modal').modal('refresh');
-		});
-		$('.ui.modal').modal('refresh');
-	}
+    choose(chosen) {
+        fetch(`https://api.themoviedb.org/3/movie/${chosen.id}?api_key=dd816c83ab8a2311c9d766d517e4f00c`).then(res => res.json()).then(movie_data => {
+            this.setState({ additional_movie_data: chosen });
+            this.setState({ movie_data });
+        }).then(() => {
+            //bind modal window and show
+            $('.ui.modal').modal({
+                blurring: true,
+                observeChanges: true
+            }).modal('show');
 
-	choose(qwe) {
-		fetch(`https://api.themoviedb.org/3/movie/${qwe.id}?api_key=dd816c83ab8a2311c9d766d517e4f00c`).then(res => res.json()).then(json => {
-			this.setState({ additional_data: qwe });
-			this.setState({ data: json });
-			console.log(qwe);
-			console.log(json);
-		}).catch(err => console.error(err)).then(() => {
-			$('.ui.modal').modal({
-				blurring: true
-			}).modal('settings', 'detachable', false).modal('settings', 'observeChanges', true).modal('show');
-			if ($('.ui.modal').length > 1) $('.ui.modal')[0].remove();
-			setTimeout(this.qwe, 200);
-		});
-	}
+            //some buf fix
+            if ($('.ui.modal').length > 1) $('.ui.modal')[0].remove();
+            //fix centralization bug after img load
+            $('#img').on('load', function () {
+                $('.ui.modal').modal('refresh');
+            });
+        }).catch(err => console.error(err));
+    }
 
-	render() {
-		return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-			'div',
-			null,
-			__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-				'div',
-				{ className: 'ui modal' },
-				__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('i', { className: 'close icon' }),
-				__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-					'div',
-					{ className: 'header' },
-					__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-						'div',
-						{ className: 'title' },
-						this.state.data.title
-					),
-					__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-						'div',
-						{ className: 'duration' },
-						__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('i', { className: 'wait icon' }),
-						__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-							'span',
-							null,
-							`${this.state.data.runtime > 60 ? Math.floor(this.state.data.runtime / 60).toString() + ':' + (this.state.data.runtime - Math.floor(this.state.data.runtime / 60) * 60 < 10 ? '0' + (this.state.data.runtime - Math.floor(this.state.data.runtime / 60) * 60).toString() : this.state.data.runtime - Math.floor(this.state.data.runtime / 60) * 60).toString() : this.state.data.runtime}`
-						)
-					)
-				),
-				__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-					'div',
-					{ className: 'ui fluid image ' },
-					__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('img', { id: 'img', src: `https://image.tmdb.org/t/p/original/${this.state.data.backdrop_path}` })
-				),
-				__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-					'div',
-					{ className: 'content' },
-					__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-						'div',
-						{ className: 'title_year_countries' },
-						__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-							'p',
-							null,
-							this.state.data.length != 0 && `${this.state.data.original_title} | ${this.state.data.release_date.substring(0, 4)} | `
-						),
-						this.state.data.length != 0 ? this.state.data.production_countries.map((el, index) => {
-							return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('i', { key: index, className: `${el.iso_3166_1.toLowerCase()} flag` });
-						}) : null
-					),
-					__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-						'div',
-						{ className: 'genres' },
-						__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-							'p',
-							null,
-							__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-								'strong',
-								null,
-								'Genres: '
-							)
-						),
-						this.state.data.length != 0 && this.state.data.genres.map((el, index) => {
-							return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-								'p',
-								{ key: index },
-								el.name,
-								Number(index) < this.state.data.genres.length - 1 ? ', ' : null
-							);
-						})
-					),
-					__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-						'div',
-						{ className: 'description' },
-						__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('div', { className: 'ui divider' }),
-						__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-							'div',
-							{ className: 'ui header' },
-							__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-								'p',
-								null,
-								this.state.additional_data.overview
-							)
-						),
-						__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('div', { className: 'ui divider' }),
-						__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-							'div',
-							{ className: 'time-choose ui grid' },
-							this.props.location == '/Current' && this.state.times.map((el, index) => {
-								return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-									'div',
-									{ onClick: this.activate, key: index, id: index, className: __WEBPACK_IMPORTED_MODULE_4_classnames___default()("time two wide column", { time_active: this.state.active == index }) },
-									__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-										'span',
-										null,
-										el.time
-									)
-								);
-							})
-						)
-					),
-					__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('div', { className: 'actions' })
-				)
-			)
-		);
-	}
+    choose_day(chosen) {
+        this.setState({ active_date: chosen });
+        this.setState({ active_time: null });
+    }
+
+    dates() {
+        let now = new Date();
+        let today = now.getDate();
+        let otherday = today + 5;
+        let arr = [];
+        for (today; today < otherday; today++) {
+            let date = new Date(now.getFullYear(), now.getMonth(), today);
+            let wr = `${this.monthNames(date.getMonth().toString())} / ${date.getDate().toString()}`;
+            arr.push(__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                'div',
+                { onClick: () => {
+                        this.choose_day(date.getDate().toString());
+                    },
+                    key: wr,
+                    className: __WEBPACK_IMPORTED_MODULE_4_classnames___default()("date", { date_active: date.getDate().toString() == this.state.active_date })
+                },
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    'span',
+                    null,
+                    wr
+                )
+            ));
+        }
+        return arr;
+    }
+    duration() {
+        return `${this.state.movie_data.runtime > 60 ? Math.floor(this.state.movie_data.runtime / 60).toString() + ':' + (this.state.movie_data.runtime - Math.floor(this.state.movie_data.runtime / 60) * 60 < 10 ? '0' + (this.state.movie_data.runtime - Math.floor(this.state.movie_data.runtime / 60) * 60).toString() : this.state.movie_data.runtime - Math.floor(this.state.movie_data.runtime / 60) * 60).toString() : this.state.movie_data.runtime}`;
+    }
+    monthNames(x) {
+        let monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+        return monthNames[x];
+    }
+
+    render() {
+        return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+            'div',
+            null,
+            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                'div',
+                { className: 'ui modal' },
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('i', { className: 'close icon' }),
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    'div',
+                    { className: 'header' },
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        'div',
+                        { className: 'title' },
+                        this.state.additional_movie_data.title
+                    ),
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        'div',
+                        { className: 'duration' },
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('i', { className: 'wait icon' }),
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            'span',
+                            null,
+                            this.duration()
+                        )
+                    )
+                ),
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    'div',
+                    { className: 'ui fluid image' },
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('img', { id: 'img', src: `https://image.tmdb.org/t/p/original/${this.state.movie_data.backdrop_path}` })
+                ),
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    'div',
+                    { className: 'content' },
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        'div',
+                        { className: 'title_year_countries' },
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            'p',
+                            null,
+                            this.state.movie_data.length != 0 && `${this.state.movie_data.original_title} | ${this.state.movie_data.release_date.substring(0, 4)} | `
+                        ),
+                        this.state.movie_data.length != 0 ? this.state.movie_data.production_countries.map((el, index) => {
+                            return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('i', { key: index, className: `${el.iso_3166_1.toLowerCase()} flag` });
+                        }) : null
+                    ),
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        'div',
+                        { className: 'genres' },
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            'p',
+                            null,
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                'strong',
+                                null,
+                                'Genres: '
+                            )
+                        ),
+                        this.state.movie_data.length != 0 && this.state.movie_data.genres.map((el, index) => {
+                            return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                'p',
+                                { key: index },
+                                el.name,
+                                Number(index) < this.state.movie_data.genres.length - 1 ? ', ' : null
+                            );
+                        })
+                    ),
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        'div',
+                        { className: 'description' },
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('div', { className: 'ui divider' }),
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            'div',
+                            { className: 'ui header' },
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                'p',
+                                null,
+                                this.state.additional_movie_data.overview
+                            )
+                        ),
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('div', { className: 'ui divider' }),
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            'div',
+                            { className: 'date-choose ui grid' },
+                            this.props.location == '/Current' && this.dates()
+                        ),
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('div', { className: 'ui divider' }),
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            'div',
+                            { className: 'time-choose ui grid' },
+                            this.props.location == '/Current' && this.state.times.filter(x => {
+                                return x.day == this.state.active_date;
+                            }).map((el, index) => {
+                                let currentTime = new Date();
+                                let planeTime = new Date().setHours(el.hours, el.minutes);
+                                return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    'div',
+                                    { onClick: () => this.activate(index),
+                                        key: index,
+                                        className: __WEBPACK_IMPORTED_MODULE_4_classnames___default()("time two wide column", {
+                                            time_active: this.state.active_time == index,
+                                            time_block: this.state.active_date == currentTime.getDate().toString() && currentTime > planeTime
+                                        })
+                                    },
+                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                        'span',
+                                        null,
+                                        `${el.hours}:${el.minutes}`
+                                    )
+                                );
+                            })
+                        )
+                    ),
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('div', { className: 'actions' })
+                )
+            )
+        );
+    }
 }
 /* harmony export (immutable) */ __webpack_exports__["a"] = modal_book;
 
@@ -53176,7 +53270,7 @@ exports = module.exports = __webpack_require__(168)(undefined);
 
 
 // module
-exports.push([module.i, ".App {\n  text-align: center;\n}\n\n.App-logo {\n  animation: App-logo-spin infinite 20s linear;\n  height: 80px;\n}\n\n.App-header {\n  background-color: #222;\n  height: 150px;\n  padding: 20px;\n  color: white;\n}\n\n.App-intro {\n  font-size: large;\n}\n\n@keyframes App-logo-spin {\n  from { transform: rotate(0deg); }\n  to { transform: rotate(360deg); }\n}\n", ""]);
+exports.push([module.i, ".App {\n  text-align: center;\n}\n\n.App-logo {\n  animation: App-logo-spin infinite 20s linear;\n  height: 80px;\n}\n\n.App-header {\n  background-color: #222;\n  height: 150px;\n  padding: 20px;\n  color: white;\n}\n\n.App-intro {\n  font-size: large;\n}\n\n\n@keyframes App-logo-spin {\n  from { transform: rotate(0deg); }\n  to { transform: rotate(360deg); }\n}\n", ""]);
 
 // exports
 
@@ -53192,100 +53286,107 @@ exports.push([module.i, ".App {\n  text-align: center;\n}\n\n.App-logo {\n  anim
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_semantic_ui_dist_components_dimmer__ = __webpack_require__(449);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_semantic_ui_dist_components_dimmer___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_semantic_ui_dist_components_dimmer__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__modal_book__ = __webpack_require__(450);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__movie_cards_list_css__ = __webpack_require__(920);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__movie_cards_list_css___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4__movie_cards_list_css__);
 
 
 
 
 
-class Test extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
-	constructor(props) {
-		super(props);
-		this.state = {
-			data: [],
-			active: false,
-			choosen: null
-		};
-		this.choose = this.choose.bind(this);
-		console.log(this.props.location.pathname);
-	}
 
-	componentDidMount() {
-		return fetch(this.props.location.pathname == '/Current' ? 'https://api.themoviedb.org/3/discover/movie?primary_release_date.gte=2017-07&primary_release_date.lte=2017-08&api_key=dd816c83ab8a2311c9d766d517e4f00c' : 'https://api.themoviedb.org/3/discover/movie?primary_release_date.gte=2017-08&primary_release_date.lte=2017-09&api_key=dd816c83ab8a2311c9d766d517e4f00c').then(res => res.json()).then(json => {
-			this.setState({ data: json.results });
-		}).then(() => {
-			$('.movie .ui.dimmer').dimmer({
-				on: 'hover',
-				opacity: '0.2',
-				dimmerName: 'poster'
-			});
-		}).catch(err => console.error(err));
-	}
+class Movie_cards_list extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
+    constructor(props) {
+        super(props);
+        this.state = {
+            movies_data: [],
+            active: false,
+            chosen: null
+        };
+        this.choose = this.choose.bind(this);
+        console.log(this.props.location.pathname);
+    }
 
-	choose(id) {
-		function finding(i) {
-			return i.id == Number(id);
-		}
+    componentDidMount() {
+        return fetch(this.props.location.pathname == '/Current' ? 'https://api.themoviedb.org/3/discover/movie?primary_release_date.gte=2017-07&primary_release_date.lte=2017-08&api_key=dd816c83ab8a2311c9d766d517e4f00c' : 'https://api.themoviedb.org/3/discover/movie?primary_release_date.gte=2017-08&primary_release_date.lte=2017-09&api_key=dd816c83ab8a2311c9d766d517e4f00c').then(res => res.json()).then(json => {
+            this.setState({ movies_data: json.results });
+        }).then(() => {
+            $('.movie .ui.dimmer').dimmer({
+                on: 'hover',
+                opacity: '0.2',
+                dimmerName: 'poster'
+            });
+        }).catch(err => console.error(err));
+    }
 
-		let choosen = this.state.data.find(finding);
-		this.refs.modal.choose(choosen);
-	}
+    choose(id) {
+        let chosen = this.state.movies_data.find(i => i.id == Number(id));
+        this.refs.modal.choose(chosen);
+    }
 
-	render() {
-		return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-			'div',
-			{ className: 'ui four doubling cards centered' },
-			__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__modal_book__["a" /* default */], { ref: 'modal', location: this.props.location.pathname }),
-			this.state.data !== null && this.state.data.sort((a, b) => b.popularity - a.popularity).map((el, index) => {
-				return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-					'div',
-					{ onClick: () => this.choose(el.id), className: 'ui card movie', style: { cursor: 'pointer' }, id: el.id, key: index },
-					__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-						'div',
-						{ className: 'image blurring', style: { height: "380px", overflow: "hidden" } },
-						__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('img', { src: el.poster_path ? `https://image.tmdb.org/t/p/original/${el.poster_path}` : '../img/poster-placeholder.jpg' }),
-						__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-							'div',
-							{ className: 'ui dimmer' },
-							__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-								'div',
-								{ className: 'content' },
-								__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-									'div',
-									{ className: 'center' },
-									__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-										'h3',
-										{ className: 'ui inverted header' },
-										el.overview
-									)
-								)
-							)
-						)
-					),
-					__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-						'div',
-						{ className: 'content' },
-						__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-							'p',
-							{ className: 'header', style: { minHeight: "45px" } },
-							el.title
-						)
-					),
-					__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-						'div',
-						{ className: 'extra content ' },
-						__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-							'div',
-							{ className: 'meta left floated' },
-							el.release_date
-						),
-						__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1_semantic_ui_react__["a" /* Rating */], { icon: 'star', defaultRating: Math.round(el.vote_average), maxRating: 10, size: 'mini', disabled: true })
-					)
-				);
-			})
-		);
-	}
+    cardsList() {
+        let list = [];
+        this.state.movies_data !== null && this.state.movies_data.sort((a, b) => b.popularity - a.popularity).map((el, index) => {
+            list.push(__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                'div',
+                { onClick: () => this.choose(el.id), className: 'ui card movie', key: index },
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    'div',
+                    { className: 'image blurring', style: { height: "380px", overflow: "hidden" } },
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('img', {
+                        src: el.poster_path ? `https://image.tmdb.org/t/p/original/${el.poster_path}` : '../img/poster-placeholder.jpg'
+                    }),
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        'div',
+                        { className: 'ui dimmer' },
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            'div',
+                            { className: 'content' },
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                'div',
+                                { className: 'center' },
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    'h3',
+                                    { className: 'ui inverted header' },
+                                    el.overview
+                                )
+                            )
+                        )
+                    )
+                ),
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    'div',
+                    { className: 'content' },
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        'p',
+                        { className: 'header', style: { minHeight: "45px" } },
+                        el.title
+                    )
+                ),
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    'div',
+                    { className: 'extra content ' },
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        'div',
+                        { className: 'meta left floated' },
+                        el.release_date
+                    ),
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1_semantic_ui_react__["a" /* Rating */], { icon: 'star', defaultRating: Math.round(el.vote_average), maxRating: 10, size: 'mini', disabled: true })
+                )
+            ));
+        });
+        return list;
+    }
+
+    render() {
+        return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+            'div',
+            { className: 'ui four doubling cards centered' },
+            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__modal_book__["a" /* default */], { ref: 'modal', location: this.props.location.pathname }),
+            this.cardsList()
+        );
+    }
 }
-/* harmony export (immutable) */ __webpack_exports__["a"] = Test;
+/* harmony export (immutable) */ __webpack_exports__["a"] = Movie_cards_list;
 
 /* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(84)))
 
@@ -75818,7 +75919,7 @@ exports = module.exports = __webpack_require__(168)(undefined);
 
 
 // module
-exports.push([module.i, ".time-choose.ui {\r\n\tpadding: 10px;\r\n}\r\n.time {\r\n\tborder: 1px solid red;\r\n\tborder-radius: 100px;\r\n\tmargin-right: 15px;\r\n\ttext-align: center;\r\n\tcursor: pointer;\r\n}\r\n.time_active {\r\n\tbackground: #e5e5e5;\r\n}\r\n.title_year_countries {\r\n\tdisplay: flex!important;\r\n\talign-items: center!important;\r\n\tfloat:left;\r\n}\r\n.genres,.title_year_countries {\r\n\tpadding-bottom: 10px;\r\n}\r\n.title_year_countries>p {\r\n\tmargin: 0;\r\n\tpadding-right: 10px;\r\n}\r\n.genres>p {\r\n\tmargin: 0;\r\n\tpadding-right: 3px;\r\n}\r\n.header {\r\n\tmin-height: 50px;\r\n}\r\n.duration {\r\n\tfloat:right;\r\n}\r\n.title {\r\n\tfloat:left;\r\n}\r\n.genres {\r\n\tdisplay: flex!important;\r\n\talign-items: center!important;\r\n\tfloat:right;\r\n}\r\n.description {\r\n\tpadding-top: 20px;\r\n}", ""]);
+exports.push([module.i, ".date {\r\n\tpadding: 10px;\r\n\tborder: 1px solid red;\r\n\tborder-radius: 100px;\r\n\tmargin: 10px;\r\n\tmin-width: 66px;\r\n\tdisplay: flex;\r\n\tjustify-content: center;\r\n\tcursor: pointer;\r\n}\r\n.date_active {\r\n\tbackground: #e5e5e5;\r\n}\r\n.date-choose {\r\n}\r\n.time-choose.ui {\r\n\tpadding: 10px;\r\n}\r\n.time {\r\n\tborder: 1px solid red;\r\n\tborder-radius: 100px;\r\n\tmargin-right: 15px;\r\n\ttext-align: center;\r\n\tcursor: pointer;\r\n}\r\n.time_active {\r\n\tbackground: #e5e5e5;\r\n}\r\n.time_block {\r\n\topacity: 0.4;\r\n\tpointer-events: none;\r\n}\r\n.title_year_countries {\r\n\tdisplay: flex!important;\r\n\talign-items: center!important;\r\n\tfloat:left;\r\n}\r\n.genres,.title_year_countries {\r\n\tpadding-bottom: 10px;\r\n}\r\n.title_year_countries>p {\r\n\tmargin: 0;\r\n\tpadding-right: 10px;\r\n}\r\n.genres>p {\r\n\tmargin: 0;\r\n\tpadding-right: 3px;\r\n}\r\n.header {\r\n\tmin-height: 50px;\r\n}\r\n.duration {\r\n\tfloat:right;\r\n}\r\n.title {\r\n\tfloat:left;\r\n}\r\n.genres {\r\n\tdisplay: flex!important;\r\n\talign-items: center!important;\r\n\tfloat:right;\r\n}\r\n.description {\r\n\tpadding-top: 20px;\r\n}", ""]);
 
 // exports
 
@@ -78142,6 +78243,51 @@ NavLink.defaultProps = {
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react_router__ = __webpack_require__(33);
 /* unused harmony reexport default */
+
+
+/***/ }),
+/* 920 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(921);
+if(typeof content === 'string') content = [[module.i, content, '']];
+// Prepare cssTransformation
+var transform;
+
+var options = {}
+options.transform = transform
+// add the styles to the DOM
+var update = __webpack_require__(169)(content, options);
+if(content.locals) module.exports = content.locals;
+// Hot Module Replacement
+if(false) {
+	// When the styles change, update the <style> tags
+	if(!content.locals) {
+		module.hot.accept("!!../node_modules/css-loader/index.js!./movie_cards_list.css", function() {
+			var newContent = require("!!../node_modules/css-loader/index.js!./movie_cards_list.css");
+			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+			update(newContent);
+		});
+	}
+	// When the module is disposed, remove the <style> tags
+	module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 921 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(168)(undefined);
+// imports
+
+
+// module
+exports.push([module.i, ".ui.card.movie {\r\n\tcursor: pointer;\r\n}", ""]);
+
+// exports
 
 
 /***/ })
